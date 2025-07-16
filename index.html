@@ -168,13 +168,12 @@
 </noscript>
 <!-- End TrustedForm -->
 
+<!-- Submission Script -->
 <script>
   document.getElementById('form').addEventListener('submit', function(e) {
     e.preventDefault();
 
     const form = e.target;
-
-    // Make sure TrustedForm cert is available before submitting
     const certField = document.querySelector('input[name="xxTrustedFormCertUrl"]');
 
     if (!certField || !certField.value) {
@@ -186,21 +185,25 @@
     const encodedData = new URLSearchParams(formData);
 
     const productionURL = "https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit";
-    const stagingURL = "https://app.leadconduit-staging.com/flows/new/sources/6877cd85f7c66c7807e0a626/submit";
+    const stagingURL = "https://app.leadconduit-staging.com/flows/6877ce8553b8d8dac0264a7c/sources/6877cd85f7c66c7807e0a626/submit";
 
-    // POST to production
+    // Submit to production
     fetch(`${productionURL}?redir_url=https://ehern131.github.io/erickh-trustedform-demo/submission`, {
       method: 'POST',
       body: encodedData
-    }).catch(err => console.error("Error sending to production:", err));
+    })
+    .then(res => res.text().then(text => console.log("✅ Production response:", res.status, text)))
+    .catch(err => console.error("❌ Production error:", err));
 
-    // POST to staging
+    // Submit to staging
     fetch(stagingURL, {
       method: 'POST',
       body: encodedData
-    }).catch(err => console.error("Error sending to staging:", err));
+    })
+    .then(res => res.text().then(text => console.log("✅ Staging response:", res.status, text)))
+    .catch(err => console.error("❌ Staging error:", err));
 
-    // Optional: wait then redirect
+    // Redirect after slight delay
     setTimeout(() => {
       window.location.href = "https://ehern131.github.io/erickh-trustedform-demo/submission";
     }, 1000);
