@@ -124,48 +124,87 @@
 </head>
 <body>
   <div class="main-block">
-    <form id="form" method="post" action="https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit?redir_url=https://ehern131.github.io/erickh-trustedform-demo/submission">
-      <div class="title">
-        <h2>Register For Online Courses</h2>
-      </div>
-      <div class="info">
-        <input class="fname" type="text" name="first_name" placeholder="First Name">
-        <input type="text" name="last_name" placeholder="Last Name">
-        <input type="text" name="email" placeholder="Email">
-        <input type="text" name="phone_1" placeholder="Phone number">
-        <input type="state" name="state" placeholder="State">
-        <input type="leads_age" name="age" placeholder="Age">
-
-        <!-- <input type="text" name="featured_courses_apros" placeholder="Featured Courses">
-        <select>
-          <option value="course-type" selected>Course type*</option>
-          <option value="short-courses">Short courses</option>
-          <option value="featured-courses">Featured courses</option>
-          <option value="undergraduate">Undergraduate</option>
-          <option value="diploma">Diploma</option>
-          <option value="certificate">Certificate</option>
-          <option value="masters-degree">Masters degree</option>
-          <option value="postgraduate">Postgraduate</option>
-        </select> -->
-      </div>
-      <div class="checkbox">
-        <input type="checkbox" name="checkbox"><span>I agree to the <a href="https://www.w3docs.com/privacy-policy">Privacy Policy for Erick TF Demo.</a></span>
-      </div>
-      <button type="submit" href="submission.html">Submit</button>
-    </form>
+<form id="form">
+  <div class="title">
+    <h2>Register For Online Courses</h2>
   </div>
-  <!-- TrustedForm -->
-  <script type="text/javascript">
-    (function() {
-      var tf = document.createElement('script');
-      tf.type = 'text/javascript'; tf.async = true;
-      tf.src = ("https:" == document.location.protocol ? 'https' : 'http') + "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" + new Date().getTime() + Math.random();
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tf, s);
-    })();
-  </script>
-  <noscript>
-    <img src="https://api.trustedform.com/ns.gif" />
-  </noscript>
-  <!-- End TrustedForm -->
+  <div class="info">
+    <input class="fname" type="text" name="first_name" placeholder="First Name" required>
+    <input type="text" name="last_name" placeholder="Last Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="text" name="phone_1" placeholder="Phone number" required>
+    <input type="text" name="state" placeholder="State">
+    <input type="text" name="age" placeholder="Age">
+
+    <!-- TrustedForm hidden fields (autopopulated by script) -->
+    <input type="hidden" name="xxTrustedFormCertUrl" />
+    <input type="hidden" name="xxTrustedFormPingUrl" />
+  </div>
+
+  <div class="checkbox">
+    <input type="checkbox" name="checkbox" required>
+    <span>I agree to the 
+      <a href="https://www.w3docs.com/privacy-policy" target="_blank">Privacy Policy for Erick TF Demo.</a>
+    </span>
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
+  </div>
+ <!-- TrustedForm -->
+<script type="text/javascript">
+  (function() {
+    var tf = document.createElement('script');
+    tf.type = 'text/javascript'; tf.async = true;
+    tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
+             "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" +
+             new Date().getTime() + Math.random();
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(tf, s);
+  })();
+</script>
+<noscript>
+  <img src="https://api.trustedform.com/ns.gif" />
+</noscript>
+<!-- End TrustedForm -->
+
+<script>
+  document.getElementById('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+
+    // Make sure TrustedForm cert is available before submitting
+    const certField = document.querySelector('input[name="xxTrustedFormCertUrl"]');
+
+    if (!certField || !certField.value) {
+      alert("TrustedForm certificate not available yet. Please wait a moment and try again.");
+      return;
+    }
+
+    const formData = new FormData(form);
+    const encodedData = new URLSearchParams(formData);
+
+    const productionURL = "https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit";
+    const stagingURL = "https://app.leadconduit-staging.com/flows/new/sources/6877cd85f7c66c7807e0a626/submit";
+
+    // POST to production
+    fetch(`${productionURL}?redir_url=https://ehern131.github.io/erickh-trustedform-demo/submission`, {
+      method: 'POST',
+      body: encodedData
+    }).catch(err => console.error("Error sending to production:", err));
+
+    // POST to staging
+    fetch(stagingURL, {
+      method: 'POST',
+      body: encodedData
+    }).catch(err => console.error("Error sending to staging:", err));
+
+    // Optional: wait then redirect
+    setTimeout(() => {
+      window.location.href = "https://ehern131.github.io/erickh-trustedform-demo/submission";
+    }, 1000);
+  });
+</script>
 </body>
 </html>
