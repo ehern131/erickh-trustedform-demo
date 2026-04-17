@@ -1,146 +1,89 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Educational registration form</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
-  <style>
-    html, body { min-height: 100%; }
-    body, div, form, input, select, p {
-      padding: 0;
-      margin: 0;
-      outline: none;
-      font-family: Roboto, Arial, sans-serif;
-      font-size: 16px;
-      color: #eee;
-    }
-    body {
-      background: url("/uploads/media/default/0001/01/b5edc1bad4dc8c20291c8394527cb2c5b43ee13c.jpeg") no-repeat center;
-      background-size: cover;
-    }
-    h1, h2 { text-transform: uppercase; font-weight: 400; }
-    h2 { margin: 0 0 0 8px; }
-    .main-block {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      padding: 25px;
-      background: rgba(0, 0, 0, 0.1);
-    }
-    form { padding: 25px; background: rgba(0, 0, 0, 0.7); }
-    .title { display: flex; align-items: center; margin-bottom: 20px; }
-    .info { display: flex; flex-direction: column; }
-    input, select {
-      padding: 5px;
-      margin-bottom: 30px;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #eee;
-    }
-    input::placeholder { color: #eee; }
-    option { background: black; }
-    .checkbox input { margin: 0 10px 0 0; vertical-align: middle; }
-    .btn-item, button {
-      padding: 10px 5px;
-      margin-top: 20px;
-      border-radius: 5px;
-      border: none;
-      background: #26a9e0;
-      color: #fff;
-    }
-    button { width: 100%; }
-    button:hover { background: #85d6de; }
-  </style>
-</head>
+<!-- TrustedForm -->
+<script type="text/javascript">
+  (function() {
+    var tf = document.createElement('script');
+    tf.type = 'text/javascript';
+    tf.async = true;
+    tf.src = ("https:" === document.location.protocol ? "https" : "http") +
+      "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" +
+      new Date().getTime() + Math.random();
 
-<body>
-<div class="main-block">
-<form id="form">
-  <div class="title">
-    <h2>Register For Online Courses</h2>
-  </div>
-
-  <div class="info">
-    <input type="text" name="first_name" placeholder="First Name" required>
-    <input type="text" name="last_name" placeholder="Last Name" required>
-    <input type="email" name="email" placeholder="Email" required>
-    <input type="text" name="phone_1" placeholder="Phone number" required>
-    <input type="text" name="state" placeholder="State">
-    <input type="text" name="age" placeholder="Age">
-
-    <!-- TrustedForm -->
-    <input type="hidden" name="xxTrustedFormCertUrl">
-    <input type="hidden" name="xxTrustedFormPingUrl">
-  </div>
-
-  <div class="checkbox">
-    <input type="checkbox" required>
-    <span>
-      I agree to the 
-      <a href="https://www.w3docs.com/privacy-policy" target="_blank">
-        Privacy Policy for Erick TF Demo.
-      </a>
-    </span>
-  </div>
-
-  <button type="submit">Submit</button>
-</form>
-</div>
-
-<!-- TrustedForm Script -->
-<script>
-(function() {
-  var tf = document.createElement('script');
-  tf.type = 'text/javascript'; tf.async = true;
-  tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
-           "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" +
-           new Date().getTime() + Math.random();
-  var s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(tf, s);
-})();
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(tf, s);
+  })();
 </script>
+<noscript>
+  <img src="https://api.trustedform.com/ns.gif" />
+</noscript>
+<!-- End TrustedForm -->
 
 <!-- Submission Script -->
 <script>
-document.getElementById('form').addEventListener('submit', function(e) {
-  e.preventDefault();
+  const form = document.getElementById('form');
+  const submitButton = form.querySelector('button[type="submit"]');
+  const certField = form.querySelector('input[name="xxTrustedFormCertUrl"]');
 
-  const form = e.target;
-  const certField = document.querySelector('input[name="xxTrustedFormCertUrl"]');
+  // Start disabled until TrustedForm cert is available
+  submitButton.disabled = true;
+  submitButton.textContent = "Loading...";
 
-  if (!certField || !certField.value) {
-    alert("TrustedForm certificate not ready. Try again.");
-    return;
+  function enableSubmitWhenReady() {
+    if (certField && certField.value && certField.value.trim() !== "") {
+      submitButton.disabled = false;
+      submitButton.textContent = "Submit";
+      return true;
+    }
+    return false;
   }
 
-  const formData = new FormData(form);
-  const encodedData = new URLSearchParams(formData);
+  // Check immediately in case it is already present
+  if (!enableSubmitWhenReady()) {
+    // Poll briefly until TrustedForm populates the field
+    const tfInterval = setInterval(() => {
+      if (enableSubmitWhenReady()) {
+        clearInterval(tfInterval);
+      }
+    }, 250);
 
-  const productionURL = "https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit";
-  const stagingURL = "https://app.leadconduit-staging.com/flows/6877ce8553b8d8dac0264a7c/sources/600f049548231b06fae160a0/submit";
-  const newPostingURL = "https://app.leadconduit.com/flows/69e248a7b8a23540092d1fec/sources/69e24836f88a774c6f2d7627/submit";
+    // Stop polling after 10 seconds
+    setTimeout(() => clearInterval(tfInterval), 10000);
+  }
 
-  const endpoints = [productionURL, stagingURL, newPostingURL];
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-  endpoints.forEach(url => {
-    console.log("📤 Submitting to:", url);
-    fetch(url, {
-      method: 'POST',
-      body: encodedData
-    })
-    .then(res => res.text().then(text => {
-      console.log("✅ Response:", res.status, text);
-    }))
-    .catch(err => console.error("❌ Error:", err));
+    if (!certField || !certField.value || certField.value.trim() === "") {
+      alert("TrustedForm certificate is still loading. Please wait a few seconds and try again.");
+      return;
+    }
+
+    const formData = new FormData(form);
+    const encodedData = new URLSearchParams(formData);
+
+    const productionURL = "https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit";
+    const stagingURL = "https://app.leadconduit-staging.com/flows/6877ce8553b8d8dac0264a7c/sources/600f049548231b06fae160a0/submit";
+    const newPostingURL = "https://app.leadconduit.com/flows/69e248a7b8a23540092d1fec/sources/69e24836f88a774c6f2d7627/submit";
+
+    console.log("TrustedForm Cert URL:", certField.value);
+
+    const requests = [
+      fetch(`${productionURL}?redir_url=https://ehern131.github.io/erickh-trustedform-demo/submission`, {
+        method: 'POST',
+        body: encodedData
+      }),
+      fetch(stagingURL, {
+        method: 'POST',
+        body: encodedData
+      }),
+      fetch(newPostingURL, {
+        method: 'POST',
+        body: encodedData
+      })
+    ];
+
+    Promise.allSettled(requests).then(results => {
+      console.log("Submission results:", results);
+      window.location.href = "https://ehern131.github.io/erickh-trustedform-demo/submission";
+    });
   });
-
-  setTimeout(() => {
-    window.location.href = "https://ehern131.github.io/erickh-trustedform-demo/submission";
-  }, 1000);
-});
 </script>
-
-</body>
-</html>
