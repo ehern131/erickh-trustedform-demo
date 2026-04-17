@@ -139,6 +139,9 @@
         <input type="text" name="phone_1" placeholder="Phone number" required>
         <input type="text" name="state" placeholder="State">
         <input type="text" name="age" placeholder="Age">
+
+        <input type="hidden" name="xxTrustedFormCertUrl">
+        <input type="hidden" name="xxTrustedFormPingUrl">
       </div>
 
       <div class="checkbox">
@@ -152,58 +155,39 @@
     </form>
   </div>
 
- <!-- TrustedForm -->
-<script type="text/javascript">
-  (function() {
-    var tf = document.createElement('script');
-    tf.type = 'text/javascript';
-    tf.async = true;
-    tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
-      '://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&use_tagged_consent=true&l=' +
-      new Date().getTime() + Math.random();
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(tf, s);
-  })();
-</script>
-<noscript>
-  <img src='https://api.trustedform.com/ns.gif' />
-</noscript>
-<!-- End TrustedForm -->
+  <!-- TrustedForm -->
+  <script type="text/javascript">
+    (function() {
+      var tf = document.createElement('script');
+      tf.type = 'text/javascript';
+      tf.async = true;
+      tf.src = ("https:" === document.location.protocol ? "https" : "http") +
+        "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" +
+        new Date().getTime() + Math.random();
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(tf, s);
+    })();
+  </script>
+  <noscript>
+    <img src="https://api.trustedform.com/ns.gif" alt="">
+  </noscript>
+  <!-- End TrustedForm -->
 
   <script>
     document.getElementById('form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
       const form = e.target;
+      const certField = form.querySelector('input[name="xxTrustedFormCertUrl"]');
 
-      function getCertField() {
-        return form.querySelector('input[name="xxTrustedFormCertUrl"]');
-      }
-
-      function getPingField() {
-        return form.querySelector('input[name="xxTrustedFormPingUrl"]');
-      }
-
-      // Wait up to 5 seconds for TrustedForm to inject and populate fields
-      let certField = getCertField();
       let attempts = 0;
-
-      while (
-        (!certField || !certField.value || certField.value.trim() === '') &&
-        attempts < 20
-      ) {
+      while ((!certField || !certField.value || certField.value.trim() === '') && attempts < 20) {
         await new Promise(resolve => setTimeout(resolve, 250));
-        certField = getCertField();
         attempts++;
       }
 
-      const pingField = getPingField();
-
-      console.log('TrustedForm cert field:', certField);
-      console.log('TrustedForm cert value:', certField ? certField.value : '(missing)');
-      console.log('TrustedForm ping value:', pingField ? pingField.value : '(missing)');
-
       if (!certField || !certField.value || certField.value.trim() === '') {
-        alert('TrustedForm certificate not available yet. Open DevTools and check whether the SDK is being blocked or failing to inject the hidden field.');
+        alert('TrustedForm certificate not available yet. Please wait a moment and try again.');
         return;
       }
 
@@ -227,8 +211,7 @@
           method: 'POST',
           body: encodedData
         })
-      ]).then(results => {
-        console.log('Submission results:', results);
+      ]).then(() => {
         window.location.href = 'https://ehern131.github.io/erickh-trustedform-demo/submission';
       });
     });
