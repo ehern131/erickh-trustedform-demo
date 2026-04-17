@@ -2,12 +2,10 @@
 <html>
 <head>
   <title>Educational registration form</title>
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
   <style>
-    html, body {
-      min-height: 100%;
-    }
+    html, body { min-height: 100%; }
     body, div, form, input, select, p {
       padding: 0;
       margin: 0;
@@ -20,13 +18,8 @@
       background: url("/uploads/media/default/0001/01/b5edc1bad4dc8c20291c8394527cb2c5b43ee13c.jpeg") no-repeat center;
       background-size: cover;
     }
-    h1, h2 {
-      text-transform: uppercase;
-      font-weight: 400;
-    }
-    h2 {
-      margin: 0 0 0 8px;
-    }
+    h1, h2 { text-transform: uppercase; font-weight: 400; }
+    h2 { margin: 0 0 0 8px; }
     .main-block {
       display: flex;
       flex-direction: column;
@@ -36,30 +29,9 @@
       padding: 25px;
       background: rgba(0, 0, 0, 0.1);
     }
-    .left-part, form {
-      padding: 25px;
-    }
-    .left-part {
-      text-align: center;
-    }
-    .fa-graduation-cap {
-      font-size: 72px;
-    }
-    form {
-      background: rgba(0, 0, 0, 0.7);
-    }
-    .title {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .info {
-      display: flex;
-      flex-direction: column;
-    }
-    #form {
-      width 50%;
-    }
+    form { padding: 25px; background: rgba(0, 0, 0, 0.7); }
+    .title { display: flex; align-items: center; margin-bottom: 20px; }
+    .info { display: flex; flex-direction: column; }
     input, select {
       padding: 5px;
       margin-bottom: 30px;
@@ -67,151 +39,108 @@
       border: none;
       border-bottom: 1px solid #eee;
     }
-    input::placeholder {
-      color: #eee;
-    }
-    option:focus {
-      border: none;
-    }
-    option {
-      background: black;
-      border: none;
-    }
-    .checkbox input {
-      margin: 0 10px 0 0;
-      vertical-align: middle;
-    }
-    .checkbox a {
-      color: #26a9e0;
-    }
-    .checkbox a:hover {
-      color: #85d6de;
-    }
+    input::placeholder { color: #eee; }
+    option { background: black; }
+    .checkbox input { margin: 0 10px 0 0; vertical-align: middle; }
     .btn-item, button {
       padding: 10px 5px;
       margin-top: 20px;
       border-radius: 5px;
       border: none;
       background: #26a9e0;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 400;
       color: #fff;
     }
-    .btn-item {
-      display: inline-block;
-      margin: 20px 5px 0;
-    }
-    button {
-      width: 100%;
-    }
-    button:hover, .btn-item:hover {
-      background: #85d6de;
-    }
-    @media (min-width: 568px) {
-      html, body {
-        height: 100%;
-      }
-      .main-block {
-        flex-direction: row;
-        height: calc(100% - 50px);
-      }
-      .left-part, form {
-        height: auto;
-      }
-    }
+    button { width: 100%; }
+    button:hover { background: #85d6de; }
   </style>
 </head>
+
 <body>
-  <div class="main-block">
+<div class="main-block">
 <form id="form">
   <div class="title">
     <h2>Register For Online Courses</h2>
   </div>
+
   <div class="info">
-    <input class="fname" type="text" name="first_name" placeholder="First Name" required>
+    <input type="text" name="first_name" placeholder="First Name" required>
     <input type="text" name="last_name" placeholder="Last Name" required>
     <input type="email" name="email" placeholder="Email" required>
     <input type="text" name="phone_1" placeholder="Phone number" required>
     <input type="text" name="state" placeholder="State">
     <input type="text" name="age" placeholder="Age">
 
-    <!-- TrustedForm hidden fields (autopopulated by script) -->
-    <input type="hidden" name="xxTrustedFormCertUrl" />
-    <input type="hidden" name="xxTrustedFormPingUrl" />
+    <!-- TrustedForm -->
+    <input type="hidden" name="xxTrustedFormCertUrl">
+    <input type="hidden" name="xxTrustedFormPingUrl">
   </div>
 
   <div class="checkbox">
-    <input type="checkbox" name="checkbox" required>
-    <span>I agree to the 
-      <a href="https://www.w3docs.com/privacy-policy" target="_blank">Privacy Policy for Erick TF Demo.</a>
+    <input type="checkbox" required>
+    <span>
+      I agree to the 
+      <a href="https://www.w3docs.com/privacy-policy" target="_blank">
+        Privacy Policy for Erick TF Demo.
+      </a>
     </span>
   </div>
 
   <button type="submit">Submit</button>
 </form>
-  </div>
- <!-- TrustedForm -->
-<script type="text/javascript">
-  (function() {
-    var tf = document.createElement('script');
-    tf.type = 'text/javascript'; tf.async = true;
-    tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
-             "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" +
-             new Date().getTime() + Math.random();
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(tf, s);
-  })();
-</script>
-<noscript>
-  <img src="https://api.trustedform.com/ns.gif" />
-</noscript>
-<!-- End TrustedForm -->
+</div>
 
-<!-- Dual Submission Script -->
+<!-- TrustedForm Script -->
 <script>
-  document.getElementById('form').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const certField = document.querySelector('input[name="xxTrustedFormCertUrl"]');
-
-    if (!certField || !certField.value) {
-      alert("TrustedForm certificate not available yet. Please wait a moment and try again.");
-      return;
-    }
-
-    const formData = new FormData(form);
-    const encodedData = new URLSearchParams(formData);
-
-    const productionURL = "https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit";
-    const stagingURL = "https://app.leadconduit-staging.com/flows/6877ce8553b8d8dac0264a7c/sources/600f049548231b06fae160a0/submit";
-
-    console.log("📤 Submitting to Production...");
-    fetch(`${productionURL}?redir_url=https://ehern131.github.io/erickh-trustedform-demo/submission`, {
-      method: 'POST',
-      body: encodedData
-    })
-    .then(res => res.text().then(text => {
-      console.log("✅ Production response:", res.status, text);
-    }))
-    .catch(err => console.error("❌ Production error:", err));
-
-    console.log("📤 Submitting to Staging...");
-    fetch(stagingURL, {
-      method: 'POST',
-      body: encodedData
-    })
-    .then(res => res.text().then(text => {
-      console.log("✅ Staging response:", res.status, text);
-    }))
-    .catch(err => console.error("❌ Staging error:", err));
-
-    // Redirect after delay
-    setTimeout(() => {
-      window.location.href = "https://ehern131.github.io/erickh-trustedform-demo/submission";
-    }, 1000);
-  });
+(function() {
+  var tf = document.createElement('script');
+  tf.type = 'text/javascript'; tf.async = true;
+  tf.src = ("https:" == document.location.protocol ? 'https' : 'http') +
+           "://api.trustedform.com/trustedform.js?field=xxTrustedFormCertUrl&ping_field=xxTrustedFormPingUrl&l=" +
+           new Date().getTime() + Math.random();
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(tf, s);
+})();
 </script>
+
+<!-- Submission Script -->
+<script>
+document.getElementById('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const certField = document.querySelector('input[name="xxTrustedFormCertUrl"]');
+
+  if (!certField || !certField.value) {
+    alert("TrustedForm certificate not ready. Try again.");
+    return;
+  }
+
+  const formData = new FormData(form);
+  const encodedData = new URLSearchParams(formData);
+
+  const productionURL = "https://app.leadconduit.com/flows/62e29ba78962ae06cd22baf1/sources/62e29d0578222f03b466728a/submit";
+  const stagingURL = "https://app.leadconduit-staging.com/flows/6877ce8553b8d8dac0264a7c/sources/600f049548231b06fae160a0/submit";
+  const newPostingURL = "https://app.leadconduit.com/flows/69e248a7b8a23540092d1fec/sources/69e24836f88a774c6f2d7627/submit";
+
+  const endpoints = [productionURL, stagingURL, newPostingURL];
+
+  endpoints.forEach(url => {
+    console.log("📤 Submitting to:", url);
+    fetch(url, {
+      method: 'POST',
+      body: encodedData
+    })
+    .then(res => res.text().then(text => {
+      console.log("✅ Response:", res.status, text);
+    }))
+    .catch(err => console.error("❌ Error:", err));
+  });
+
+  setTimeout(() => {
+    window.location.href = "https://ehern131.github.io/erickh-trustedform-demo/submission";
+  }, 1000);
+});
+</script>
+
 </body>
 </html>
